@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pixelink — Marketing Numérique & IA</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --pink:#FF2D78;--purple:#7B2FFF;--cyan:#00C4A7;--yellow:#FFB800;--orange:#FF6B35;
+  --ink:#111827;--mid:#4B5563;--muted:#9CA3AF;--light:#F9FAFB;
+  --card:#FFFFFF;--border:rgba(0,0,0,0.07);
+  --syne:'Syne',sans-serif;--body:'Plus Jakarta Sans',sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{font-family:var(--body);background:#F4F1FF;color:var(--ink);overflow-x:hidden;cursor:none;}
+
+/* CURSOR */
+.cur{width:10px;height:10px;background:var(--pink);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;mix-blend-mode:multiply;transition:width .2s,height .2s;}
+.cur-r{width:36px;height:36px;border:1.5px solid rgba(123,47,255,.35);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 5%;height:72px;display:flex;align-items:center;justify-content:space-between;background:rgba(244,241,255,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(123,47,255,.1);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-text{font-family:var(--syne);font-size:1.3rem;font-weight:800;letter-spacing:-.03em;background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-links{display:flex;align-items:center;gap:2.5rem;list-style:none;}
+.nav-links a{font-size:.8rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--purple);}
+.nav-btn{font-family:var(--syne);font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.6rem 1.5rem;border-radius:100px;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;text-decoration:none;box-shadow:0 4px 18px rgba(123,47,255,.3);transition:opacity .2s,transform .2s;}
+.nav-btn:hover{opacity:.88;transform:translateY(-1px);}
+
+/* ─── HERO ─────────────────────────── */
+.hero{min-height:100vh;padding:120px 5% 80px;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;pointer-events:none;z-index:0;}
+.hero-bg .b1{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(ellipse,rgba(123,47,255,.12) 0%,transparent 65%);top:-200px;right:-150px;}
+.hero-bg .b2{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,45,120,.08) 0%,transparent 65%);bottom:-100px;left:-100px;}
+.hero-content{position:relative;z-index:1;}
+.badge{display:inline-flex;align-items:center;gap:.5rem;font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:.45rem 1rem;border-radius:100px;background:rgba(123,47,255,.08);border:1px solid rgba(123,47,255,.2);color:var(--purple);margin-bottom:2rem;}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--pink);animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-family:var(--syne);font-size:clamp(2.8rem,5.5vw,5.5rem);font-weight:800;line-height:.95;letter-spacing:-.04em;margin-bottom:1.8rem;color:var(--ink);}
+.hero h1 .grad{background:linear-gradient(90deg,var(--pink),var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200%;animation:gs 5s linear infinite;}
+@keyframes gs{0%{background-position:0%}100%{background-position:200%}}
+.hero-desc{font-size:1.05rem;color:var(--mid);line-height:1.85;max-width:460px;margin-bottom:2.5rem;font-weight:300;}
+.hero-desc b{color:var(--ink);font-weight:600;}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;}
+.btn-p{font-family:var(--syne);font-size:.82rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:1rem 2.2rem;border-radius:100px;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;text-decoration:none;box-shadow:0 8px 28px rgba(123,47,255,.35);transition:transform .2s,box-shadow .2s;}
+.btn-p:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(123,47,255,.5);}
+.btn-g{font-family:var(--syne);font-size:.82rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:1rem 2.2rem;border-radius:100px;border:2px solid rgba(123,47,255,.25);color:var(--purple);text-decoration:none;transition:background .2s,border-color .2s;}
+.btn-g:hover{background:rgba(123,47,255,.07);border-color:var(--purple);}
+
+/* Hero right side cards */
+.hero-right{position:relative;z-index:1;display:flex;flex-direction:column;gap:1.2rem;}
+.hcard{background:var(--card);border-radius:18px;padding:1.6rem 2rem;border:1px solid var(--border);box-shadow:0 4px 24px rgba(0,0,0,.06);}
+.hcard-label{font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem;}
+.hcard-big{font-family:var(--syne);font-size:2.2rem;font-weight:800;letter-spacing:-.03em;background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;}
+.hcard-sub{font-size:.82rem;color:var(--mid);margin-top:.4rem;}
+.tags-wrap{display:flex;flex-wrap:wrap;gap:.6rem;}
+.tag{font-size:.72rem;font-weight:500;padding:.4rem 1rem;border-radius:100px;background:#fff;border:1.5px solid rgba(123,47,255,.15);color:var(--mid);letter-spacing:.03em;}
+.tag:nth-child(1){border-color:rgba(255,45,120,.3);color:var(--pink);}
+.tag:nth-child(2){border-color:rgba(123,47,255,.3);color:var(--purple);}
+.tag:nth-child(3){border-color:rgba(0,196,167,.3);color:var(--cyan);}
+.tag:nth-child(4){border-color:rgba(255,107,53,.3);color:var(--orange);}
+.tag:nth-child(5){border-color:rgba(255,184,0,.3);color:#996d00;}
+.tag:nth-child(6){border-color:rgba(123,47,255,.3);color:var(--purple);}
+
+/* SCROLLING BAND */
+.band{padding:1.1rem 0;overflow:hidden;background:linear-gradient(90deg,var(--pink),var(--purple),var(--cyan),var(--purple),var(--pink));background-size:300%;animation:bgs 8s linear infinite;}
+@keyframes bgs{0%{background-position:0%}100%{background-position:300%}}
+.band-track{display:flex;gap:2.5rem;white-space:nowrap;animation:scroll 25s linear infinite;}
+.band-item{font-family:var(--syne);font-size:.72rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.9);flex-shrink:0;}
+.band-sep{color:rgba(255,255,255,.4);}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ─── SECTION BASE ─────────────────── */
+.section{padding:7rem 5%;}
+.section-alt{background:#fff;}
+.section-pink{background:linear-gradient(135deg,#FFF0F7 0%,#F4F1FF 100%);}
+.sec-head{margin-bottom:4.5rem;}
+.sec-chip{display:inline-flex;align-items:center;gap:.6rem;font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--purple);margin-bottom:1rem;}
+.sec-chip::before{content:'';width:24px;height:2.5px;border-radius:2px;background:linear-gradient(90deg,var(--pink),var(--purple));}
+.sec-title{font-family:var(--syne);font-size:clamp(2rem,4vw,3.2rem);font-weight:800;letter-spacing:-.04em;line-height:1.05;color:var(--ink);}
+.sec-title .g1{background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.sec-title .g2{background:linear-gradient(90deg,var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.sec-sub{font-size:1rem;color:var(--mid);line-height:1.8;max-width:520px;margin-top:1rem;font-weight:300;}
+
+/* ─── ABOUT ────────────────────────── */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+.about-body{display:flex;flex-direction:column;gap:1rem;}
+.about-body p{font-size:.97rem;color:var(--mid);line-height:1.9;}
+.about-body b{color:var(--ink);}
+.about-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:.5rem;}
+.astat{background:var(--card);border-radius:14px;padding:1.4rem 1.6rem;border:1px solid var(--border);}
+.astat-num{font-family:var(--syne);font-size:2rem;font-weight:800;background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;}
+.astat-label{font-size:.75rem;color:var(--muted);margin-top:.3rem;font-weight:500;}
+.skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.skill{background:var(--card);border-radius:16px;padding:1.4rem 1.6rem;border:1px solid var(--border);transition:transform .3s,box-shadow .3s,border-color .3s;}
+.skill:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.09);}
+.skill:nth-child(1):hover{border-color:rgba(255,45,120,.3);}
+.skill:nth-child(2):hover{border-color:rgba(123,47,255,.3);}
+.skill:nth-child(3):hover{border-color:rgba(0,196,167,.3);}
+.skill:nth-child(4):hover{border-color:rgba(255,107,53,.3);}
+.skill:nth-child(5):hover{border-color:rgba(255,184,0,.3);}
+.skill:nth-child(6):hover{border-color:rgba(123,47,255,.3);}
+.skill-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:.9rem;}
+.skill:nth-child(1) .skill-ico{background:rgba(255,45,120,.1);}
+.skill:nth-child(2) .skill-ico{background:rgba(123,47,255,.1);}
+.skill:nth-child(3) .skill-ico{background:rgba(0,196,167,.1);}
+.skill:nth-child(4) .skill-ico{background:rgba(255,107,53,.1);}
+.skill:nth-child(5) .skill-ico{background:rgba(255,184,0,.12);}
+.skill:nth-child(6) .skill-ico{background:rgba(123,47,255,.1);}
+.skill-name{font-size:.88rem;font-weight:600;color:var(--ink);margin-bottom:.25rem;}
+.skill-desc{font-size:.75rem;color:var(--muted);}
+
+/* ─── OFFERS ───────────────────────── */
+.offers-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3.5rem;flex-wrap:wrap;gap:2rem;}
+.offers-note{max-width:360px;font-size:.9rem;color:var(--mid);line-height:1.8;}
+.offers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.offer{background:var(--card);border-radius:22px;padding:2.4rem 2.2rem;border:1.5px solid var(--border);display:flex;flex-direction:column;transition:transform .3s,box-shadow .3s;position:relative;overflow:hidden;}
+.offer::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--pink),var(--purple));}
+.offer.hot::before{background:linear-gradient(90deg,var(--purple),var(--cyan));}
+.offer:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.1);}
+.offer.hot{border-color:rgba(123,47,255,.35);box-shadow:0 8px 32px rgba(123,47,255,.12);}
+.offer-pill{display:inline-block;font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.35rem .9rem;border-radius:100px;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;margin-bottom:1.5rem;align-self:flex-start;}
+.offer-ico{font-size:2rem;margin-bottom:1rem;display:block;}
+.offer-title{font-family:var(--syne);font-size:1.35rem;font-weight:800;letter-spacing:-.02em;color:var(--ink);margin-bottom:.3rem;}
+.offer-sub{font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--purple);margin-bottom:1.8rem;}
+.offer.hot .offer-sub{color:var(--cyan);}
+.offer-items{list-style:none;display:flex;flex-direction:column;gap:.75rem;flex:1;margin-bottom:2rem;}
+.offer-items li{font-size:.85rem;color:var(--mid);display:flex;align-items:flex-start;gap:.7rem;line-height:1.5;}
+.offer-items li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--pink);flex-shrink:0;margin-top:.45rem;}
+.offer.hot .offer-items li::before{background:var(--purple);}
+.offer-price-block{border-top:1px solid var(--border);padding-top:1.4rem;margin-bottom:1.4rem;}
+.offer-price{font-family:var(--syne);font-size:1.7rem;font-weight:800;letter-spacing:-.03em;background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.offer.hot .offer-price{background:linear-gradient(90deg,var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.offer-price-note{font-size:.72rem;color:var(--muted);margin-top:.2rem;}
+.offer-btn{display:block;text-align:center;padding:.9rem;border-radius:100px;font-family:var(--syne);font-size:.78rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;border:2px solid rgba(123,47,255,.25);color:var(--purple);transition:all .25s;}
+.offer-btn:hover{background:rgba(123,47,255,.07);border-color:var(--purple);}
+.offer.hot .offer-btn{background:linear-gradient(135deg,var(--pink),var(--purple));border-color:transparent;color:#fff;box-shadow:0 6px 22px rgba(123,47,255,.35);}
+.offer.hot .offer-btn:hover{opacity:.88;transform:scale(1.02);}
+
+/* ─── PROCESS ──────────────────────── */
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:3.5rem;}
+.step{background:var(--card);border-radius:20px;padding:2rem 1.8rem;border:1px solid var(--border);transition:transform .3s,box-shadow .3s;position:relative;overflow:hidden;}
+.step:hover{transform:translateY(-5px);}
+.step-num{font-family:var(--syne);font-size:3.5rem;font-weight:800;line-height:1;margin-bottom:1.2rem;opacity:.12;}
+.step:nth-child(1) .step-num{color:var(--pink);}
+.step:nth-child(2) .step-num{color:var(--purple);}
+.step:nth-child(3) .step-num{color:var(--cyan);}
+.step:nth-child(4) .step-num{color:var(--yellow);}
+.step:nth-child(1):hover{box-shadow:0 12px 36px rgba(255,45,120,.15);border-color:rgba(255,45,120,.25);}
+.step:nth-child(2):hover{box-shadow:0 12px 36px rgba(123,47,255,.15);border-color:rgba(123,47,255,.25);}
+.step:nth-child(3):hover{box-shadow:0 12px 36px rgba(0,196,167,.15);border-color:rgba(0,196,167,.25);}
+.step:nth-child(4):hover{box-shadow:0 12px 36px rgba(255,184,0,.15);border-color:rgba(255,184,0,.25);}
+.step-accent{width:36px;height:4px;border-radius:2px;margin-bottom:1rem;}
+.step:nth-child(1) .step-accent{background:var(--pink);}
+.step:nth-child(2) .step-accent{background:var(--purple);}
+.step:nth-child(3) .step-accent{background:var(--cyan);}
+.step:nth-child(4) .step-accent{background:var(--yellow);}
+.step-title{font-family:var(--syne);font-size:1rem;font-weight:800;color:var(--ink);margin-bottom:.7rem;}
+.step-text{font-size:.82rem;color:var(--mid);line-height:1.75;}
+
+/* ─── TOOLS ────────────────────────── */
+.tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3rem;}
+.tcat{background:var(--card);border-radius:18px;padding:1.8rem;border:1px solid var(--border);transition:transform .3s;}
+.tcat:hover{transform:translateY(-3px);}
+.tcat-head{display:flex;align-items:center;gap:.8rem;margin-bottom:1.3rem;}
+.tcat-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.tcat:nth-child(1) .tcat-dot{background:var(--pink);}
+.tcat:nth-child(2) .tcat-dot{background:var(--purple);}
+.tcat:nth-child(3) .tcat-dot{background:var(--cyan);}
+.tcat:nth-child(4) .tcat-dot{background:var(--yellow);}
+.tcat:nth-child(5) .tcat-dot{background:var(--orange);}
+.tcat:nth-child(6) .tcat-dot{background:var(--purple);}
+.tcat-name{font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mid);}
+.pills{display:flex;flex-wrap:wrap;gap:.5rem;}
+.pill{font-size:.75rem;font-weight:500;padding:.35rem .9rem;border-radius:100px;background:#F4F1FF;border:1px solid rgba(123,47,255,.12);color:var(--mid);transition:all .2s;}
+.pill:hover{background:rgba(123,47,255,.08);border-color:rgba(123,47,255,.3);color:var(--purple);}
+
+/* ─── CTA ──────────────────────────── */
+.cta-section{padding:8rem 5%;text-align:center;position:relative;overflow:hidden;background:linear-gradient(160deg,#F0EEFF,#FFF0F7);}
+.cta-blob{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(ellipse,rgba(123,47,255,.1),transparent 65%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+.cta-section .sec-chip{justify-content:center;}
+.cta-title{font-family:var(--syne);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:800;letter-spacing:-.04em;line-height:1.05;margin:1rem 0 1.5rem;color:var(--ink);position:relative;}
+.cta-desc{font-size:1.05rem;color:var(--mid);max-width:500px;margin:0 auto 3rem;line-height:1.8;font-weight:300;position:relative;}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;position:relative;}
+.cta-note{margin-top:2rem;font-size:.85rem;color:var(--muted);position:relative;}
+.cta-note a{color:var(--pink);text-decoration:none;border-bottom:1px solid rgba(255,45,120,.3);}
+.cta-social{display:flex;justify-content:center;gap:1rem;margin-top:1.5rem;position:relative;}
+.soc-btn{display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:600;padding:.6rem 1.4rem;border-radius:100px;text-decoration:none;transition:all .2s;}
+.soc-li{background:rgba(123,47,255,.08);border:1.5px solid rgba(123,47,255,.2);color:var(--purple);}
+.soc-li:hover{background:rgba(123,47,255,.15);}
+.soc-fb{background:rgba(24,119,242,.08);border:1.5px solid rgba(24,119,242,.2);color:#1877F2;}
+.soc-fb:hover{background:rgba(24,119,242,.15);}
+
+/* ─── FOOTER ───────────────────────── */
+footer{background:var(--ink);padding:3rem 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem;}
+.f-logo .logo-text{background:linear-gradient(90deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+footer p{font-size:.78rem;color:rgba(255,255,255,.35);letter-spacing:.04em;}
+.f-links{display:flex;gap:2rem;list-style:none;}
+.f-links a{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s;}
+.f-links a:hover{color:var(--pink);}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(36px);transition:opacity .75s ease,transform .75s ease;}
+.rv.in{opacity:1;transform:translateY(0);}
+.rv2{opacity:0;transform:translateY(36px);transition:opacity .75s ease .15s,transform .75s ease .15s;}
+.rv2.in{opacity:1;transform:translateY(0);}
+.rv3{opacity:0;transform:translateY(36px);transition:opacity .75s ease .3s,transform .75s ease .3s;}
+.rv3.in{opacity:1;transform:translateY(0);}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  .hero{grid-template-columns:1fr;padding-top:100px;}
+  .hero-right{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .about-grid{grid-template-columns:1fr;}
+  .offers-grid{grid-template-columns:1fr;}
+  .process-grid{grid-template-columns:1fr 1fr;}
+  .tools-grid{grid-template-columns:1fr 1fr;}
+  .nav-links{display:none;}
+}
+@media(max-width:600px){
+  .hero-right{grid-template-columns:1fr;}
+  .process-grid{grid-template-columns:1fr;}
+  .tools-grid{grid-template-columns:1fr;}
+  .offers-top{flex-direction:column;}
+  .about-stat-row{grid-template-columns:1fr 1fr;}
+  .skills-grid{grid-template-columns:1fr;}
+  .cta-btns{flex-direction:column;align-items:center;}
+}
+</style>
+</head>
+<body>
+<div class="cur" id="cur"></div>
+<div class="cur-r" id="cur-r"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+      <circle cx="8" cy="8" r="4.5" fill="#FF2D78"/>
+      <circle cx="18" cy="5" r="3" fill="#7B2FFF"/>
+      <circle cx="14" cy="16" r="3.5" fill="#7B2FFF"/>
+      <circle cx="8" cy="22" r="4" fill="#FF2D78"/>
+      <circle cx="22" cy="21" r="2.5" fill="#00C4A7"/>
+      <circle cx="21" cy="12" r="2" fill="#FFB800"/>
+      <line x1="8" y1="8" x2="18" y2="5" stroke="#7B2FFF" stroke-width="1.3" opacity=".6"/>
+      <line x1="8" y1="8" x2="14" y2="16" stroke="#FF2D78" stroke-width="1.3" opacity=".6"/>
+      <line x1="14" y1="16" x2="8" y2="22" stroke="#7B2FFF" stroke-width="1.3" opacity=".6"/>
+      <line x1="14" y1="16" x2="22" y2="21" stroke="#00C4A7" stroke-width="1.3" opacity=".6"/>
+      <line x1="18" y1="5" x2="21" y2="12" stroke="#FFB800" stroke-width="1" opacity=".5"/>
+    </svg>
+    <span class="logo-text">Pixelink</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#offres">Offres</a></li>
+    <li><a href="#process">Processus</a></li>
+    <li><a href="#outils">Outils</a></li>
+  </ul>
+  <a href="#contact" class="nav-btn">Travailler ensemble</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-bg"><div class="b1"></div><div class="b2"></div></div>
+  <div class="hero-content">
+    <div class="badge rv"><div class="badge-dot"></div>Disponible maintenant · 2026</div>
+    <h1 class="rv2">Marketing<br/>numérique<br/><span class="grad">&amp; IA</span></h1>
+    <p class="hero-desc rv3">J'aide les entreprises à <b>moderniser leur marketing</b> grâce à l'IA — contenu premium, campagnes qui convertissent, branding qui marque les esprits.</p>
+    <div class="hero-btns rv3">
+      <a href="#offres" class="btn-p">Voir les offres ✦</a>
+      <a href="#contact" class="btn-g">Prendre contact</a>
+    </div>
+  </div>
+  <div class="hero-right rv2">
+    <div class="hcard">
+      <div class="hcard-label">Spécialités</div>
+      <div class="tags-wrap">
+        <span class="tag">Meta Ads</span>
+        <span class="tag">Google Ads</span>
+        <span class="tag">Contenu IA</span>
+        <span class="tag">LinkedIn</span>
+        <span class="tag">Visuels IA</span>
+        <span class="tag">Automatisation</span>
+      </div>
+    </div>
+    <div class="hcard">
+      <div class="hcard-label">Expérience Ads</div>
+      <div class="hcard-big">7+ ans</div>
+      <div class="hcard-sub">Meta · Google · LinkedIn</div>
+    </div>
+    <div class="hcard">
+      <div class="hcard-label">Approche</div>
+      <div class="hcard-big">IA +<br/>Humain</div>
+      <div class="hcard-sub">Créativité amplifiée par la tech</div>
+    </div>
+  </div>
+</section>
+
+<!-- BAND -->
+<div class="band">
+  <div class="band-track">
+    <span class="band-item">Marketing Numérique</span><span class="band-sep">◆</span>
+    <span class="band-item">Intelligence Artificielle</span><span class="band-sep">◆</span>
+    <span class="band-item">Meta Ads</span><span class="band-sep">◆</span>
+    <span class="band-item">Google Ads</span><span class="band-sep">◆</span>
+    <span class="band-item">LinkedIn Branding</span><span class="band-sep">◆</span>
+    <span class="band-item">Contenu Premium</span><span class="band-sep">◆</span>
+    <span class="band-item">Visuels IA</span><span class="band-sep">◆</span>
+    <span class="band-item">Stratégie Digitale</span><span class="band-sep">◆</span>
+    <span class="band-item">Marketing Numérique</span><span class="band-sep">◆</span>
+    <span class="band-item">Intelligence Artificielle</span><span class="band-sep">◆</span>
+    <span class="band-item">Meta Ads</span><span class="band-sep">◆</span>
+    <span class="band-item">Google Ads</span><span class="band-sep">◆</span>
+    <span class="band-item">LinkedIn Branding</span><span class="band-sep">◆</span>
+    <span class="band-item">Contenu Premium</span><span class="band-sep">◆</span>
+    <span class="band-item">Visuels IA</span><span class="band-sep">◆</span>
+    <span class="band-item">Stratégie Digitale</span><span class="band-sep">◆</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="section section-alt" id="about">
+  <div class="about-grid">
+    <div class="rv">
+      <div class="sec-head" style="margin-bottom:2rem;">
+        <div class="sec-chip">À propos</div>
+        <h2 class="sec-title">Une vision <span class="g1">créative</span>,<br/>des résultats <span class="g2">concrets</span></h2>
+      </div>
+      <div class="about-body">
+        <p>Je suis consultante spécialisée en <b>marketing numérique et intelligence artificielle</b>. Mon approche fusionne créativité humaine et outils IA pour livrer des résultats qui dépassent les attentes.</p>
+        <p>Avec plusieurs années d'expérience sur Meta Ads, Google Ads et la création de contenu, j'ai développé une expertise rare : <b>comprendre les algorithmes ET créer du contenu qui touche les humains</b>.</p>
+      </div>
+      <div class="about-stat-row" style="margin-top:2rem;">
+        <div class="astat"><div class="astat-num">7+</div><div class="astat-label">Années d'expérience Ads</div></div>
+        <div class="astat"><div class="astat-num">IA</div><div class="astat-label">Dans chaque livrable</div></div>
+      </div>
+    </div>
+    <div class="skills-grid rv2">
+      <div class="skill"><div class="skill-ico">🎯</div><div class="skill-name">Stratégie & Campagnes</div><div class="skill-desc">Meta Ads · Google Ads · Demand Gen</div></div>
+      <div class="skill"><div class="skill-ico">✍️</div><div class="skill-name">Contenu IA Premium</div><div class="skill-desc">Posts · Captions · Copywriting</div></div>
+      <div class="skill"><div class="skill-ico">🎨</div><div class="skill-name">Visuels & Design IA</div><div class="skill-desc">Midjourney · Firefly · Canva</div></div>
+      <div class="skill"><div class="skill-ico">🚀</div><div class="skill-name">LinkedIn Branding</div><div class="skill-desc">Profil · Stratégie · Posts</div></div>
+      <div class="skill"><div class="skill-ico">⚡</div><div class="skill-name">Automatisation</div><div class="skill-desc">Zapier · Make · Notion AI</div></div>
+      <div class="skill"><div class="skill-ico">📊</div><div class="skill-name">Analytics & Rapports</div><div class="skill-desc">Reporting · Optimisation · KPIs</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFERS -->
+<section class="section" id="offres">
+  <div class="offers-top rv">
+    <div>
+      <div class="sec-chip">Mes offres</div>
+      <h2 class="sec-title">Trois façons de<br/><span class="g1">collaborer</span></h2>
+    </div>
+    <p class="offers-note">Des offres claires avec des livrables précis. Chaque package est pensé pour maximiser votre impact en ligne, rapidement et efficacement.</p>
+  </div>
+  <div class="offers-grid">
+    <div class="offer rv">
+      <span class="offer-ico">✍️</span>
+      <div class="offer-title">Contenu IA</div>
+      <div class="offer-sub">Posts · Visuels · Stratégie</div>
+      <ul class="offer-items">
+        <li>8 posts LinkedIn rédigés et optimisés</li>
+        <li>4 visuels IA haute résolution</li>
+        <li>Captions et hashtags stratégiques</li>
+        <li>Stratégie de contenu sur mesure</li>
+        <li>Calendrier éditorial mensuel</li>
+        <li>1 révision incluse</li>
+      </ul>
+      <div class="offer-price-block">
+        <div class="offer-price">500$ — 900$</div>
+        <div class="offer-price-note">CAD · par projet</div>
+      </div>
+      <a href="#contact" class="offer-btn">Démarrer →</a>
+    </div>
+    <div class="offer hot rv2">
+      <span class="offer-pill">⚡ Le plus populaire</span>
+      <span class="offer-ico">🚀</span>
+      <div class="offer-title">Publicités & IA</div>
+      <div class="offer-sub">Meta · Google · Copy</div>
+      <ul class="offer-items">
+        <li>Visuels Meta Ads et Google Ads</li>
+        <li>Stratégie de campagne complète</li>
+        <li>Copywriting IA haute conversion</li>
+        <li>Configuration et paramétrage</li>
+        <li>Suivi et optimisation 30 jours</li>
+        <li>Rapport de performance détaillé</li>
+        <li>2 révisions incluses</li>
+      </ul>
+      <div class="offer-price-block">
+        <div class="offer-price">1 000$ — 2 500$</div>
+        <div class="offer-price-note">CAD · par projet</div>
+      </div>
+      <a href="#contact" class="offer-btn">Démarrer →</a>
+    </div>
+    <div class="offer rv3">
+      <span class="offer-ico">💎</span>
+      <div class="offer-title">Branding LinkedIn</div>
+      <div class="offer-sub">Profil · Bannière · Visibilité</div>
+      <ul class="offer-items">
+        <li>Optimisation complète du profil</li>
+        <li>Bannière et visuels de marque</li>
+        <li>Stratégie de visibilité LinkedIn</li>
+        <li>8 posts rédigés clé en main</li>
+        <li>Visuels cohérents à la marque</li>
+        <li>Guide de prise de parole</li>
+      </ul>
+      <div class="offer-price-block">
+        <div class="offer-price">600$ — 1 500$</div>
+        <div class="offer-price-note">CAD · par projet</div>
+      </div>
+      <a href="#contact" class="offer-btn">Démarrer →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section section-pink" id="process">
+  <div class="sec-head rv">
+    <div class="sec-chip">Comment ça marche</div>
+    <h2 class="sec-title">Un processus <span class="g2">simple</span><br/>et efficace</h2>
+    <p class="sec-sub">De la première conversation au lancement — un accompagnement clair à chaque étape.</p>
+  </div>
+  <div class="process-grid">
+    <div class="step rv"><div class="step-num">01</div><div class="step-accent"></div><div class="step-title">Découverte</div><p class="step-text">On échange sur vos objectifs et votre marque. Appel gratuit de 30 min, sans engagement.</p></div>
+    <div class="step rv2"><div class="step-num">02</div><div class="step-accent"></div><div class="step-title">Stratégie</div><p class="step-text">Je construis une stratégie IA sur mesure adaptée à votre secteur et à vos cibles.</p></div>
+    <div class="step rv3"><div class="step-num">03</div><div class="step-accent"></div><div class="step-title">Production</div><p class="step-text">Création de tous vos livrables — contenu, visuels, campagnes — avec révisions incluses.</p></div>
+    <div class="step rv"><div class="step-num">04</div><div class="step-accent"></div><div class="step-title">Lancement</div><p class="step-text">Déploiement et suivi des résultats. J'optimise jusqu'à ce que les chiffres parlent.</p></div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section class="section section-alt" id="outils">
+  <div class="sec-head rv">
+    <div class="sec-chip">Boîte à outils</div>
+    <h2 class="sec-title">Les outils que<br/>j'<span class="g1">utilise</span></h2>
+    <p class="sec-sub">Des outils IA de pointe, soigneusement sélectionnés pour livrer des résultats premium.</p>
+  </div>
+  <div class="tools-grid">
+    <div class="tcat rv"><div class="tcat-head"><div class="tcat-dot"></div><div class="tcat-name">Contenu & IA</div></div><div class="pills"><span class="pill">ChatGPT</span><span class="pill">Claude AI</span><span class="pill">Gemini</span></div></div>
+    <div class="tcat rv2"><div class="tcat-head"><div class="tcat-dot"></div><div class="tcat-name">Design & Visuels</div></div><div class="pills"><span class="pill">Canva IA</span><span class="pill">Midjourney</span><span class="pill">Adobe Firefly</span></div></div>
+    <div class="tcat rv3"><div class="tcat-head"><div class="tcat-dot"></div><div class="tcat-name">Publicité</div></div><div class="pills"><span class="pill">Meta Business</span><span class="pill">Google Ads</span><span class="pill">Meta Pixel</span></div></div>
+    <div class="tcat rv"><div class="tcat-head"><div class="tcat-dot"></div><div class="tcat-name">Présentations</div></div><div class="pills"><span class="pill">Gamma</span><span class="pill">Canva</span><span class="pill">Tome</span></div></div>
+    <div class="tcat rv2"><div class="tcat-head"><div class="tcat-dot"></div><div class="tcat-name">Automatisation</div></div><div class="pills"><span class="pill">Zapier</span><span class="pill">Make</span><span class="pill">Notion AI</span></div></div>
+    <div class="tcat rv3"><div class="tcat-head"><div class="tcat-dot"></div><div class="tcat-name">Vidéo & Social</div></div><div class="pills"><span class="pill">CapCut AI</span><span class="pill">Opus Clip</span><span class="pill">Later</span></div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-blob"></div>
+  <div class="sec-chip rv">Contact</div>
+  <h2 class="cta-title rv">Prêt·e à passer au<br/><span class="grad">niveau suivant ?</span></h2>
+  <p class="cta-desc rv2">Réservez un appel découverte gratuit de 30 minutes. On parle de votre projet, vos objectifs — et je vous montre ce que l'IA peut faire pour vous.</p>
+  <div class="cta-btns rv2">
+    <a href="mailto:votre@email.com" class="btn-p">Réserver un appel gratuit ✦</a>
+    <a href="mailto:votre@email.com" class="btn-g">M'écrire par email</a>
+  </div>
+  <div class="cta-social rv3">
+
+    <a href="https://www.facebook.com/PixelInk2016/" target="_blank" class="soc-btn soc-fb">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+      Facebook
+    </a>
+  </div>
+  <p class="cta-note rv3">Ou écrivez-moi directement : <a href="mailto:votre@email.com">votre@email.com</a></p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#top" class="logo f-logo" style="text-decoration:none;">
+    <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
+      <circle cx="8" cy="8" r="4.5" fill="#FF2D78"/>
+      <circle cx="18" cy="5" r="3" fill="#7B2FFF"/>
+      <circle cx="14" cy="16" r="3.5" fill="#7B2FFF"/>
+      <circle cx="8" cy="22" r="4" fill="#FF2D78"/>
+      <circle cx="22" cy="21" r="2.5" fill="#00C4A7"/>
+      <circle cx="21" cy="12" r="2" fill="#FFB800"/>
+      <line x1="8" y1="8" x2="18" y2="5" stroke="#7B2FFF" stroke-width="1.3" opacity=".6"/>
+      <line x1="8" y1="8" x2="14" y2="16" stroke="#FF2D78" stroke-width="1.3" opacity=".6"/>
+      <line x1="14" y1="16" x2="8" y2="22" stroke="#7B2FFF" stroke-width="1.3" opacity=".6"/>
+      <line x1="14" y1="16" x2="22" y2="21" stroke="#00C4A7" stroke-width="1.3" opacity=".6"/>
+      <line x1="18" y1="5" x2="21" y2="12" stroke="#FFB800" stroke-width="1" opacity=".5"/>
+    </svg>
+    <span class="logo-text">Pixelink</span>
+  </a>
+  <p>© 2026 Pixelink · Tous droits réservés</p>
+  <ul class="f-links">
+    <li><a href="#offres">Offres</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="https://www.facebook.com/PixelInk2016/" target="_blank">Facebook</a></li>
+  </ul>
+</footer>
+
+<script>
+const cur=document.getElementById('cur'),curR=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.transform=`translate(${mx-5}px,${my-5}px)`;});
+(function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;curR.style.transform=`translate(${rx-18}px,${ry-18}px)`;requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px';});el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';});});
+
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv,.rv2,.rv3').forEach(el=>obs.observe(el));
+
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}});});
+</script>
+</body>
+</html>
